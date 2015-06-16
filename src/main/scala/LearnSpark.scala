@@ -42,6 +42,19 @@ object LearnSpark {
     val conf = new SparkConf().setAppName("Learn Spark")
     val sc = new SparkContext(conf)
 
+    // 1. Parse transactions, filter by date and group by cid + yyyy-MM
+    val trans = sc.textFile(inDir + "trans.txt").map(line => line.split(";"))
+    val transY = trans.filter(trans => trans(1).startsWith("2015"))
+    val transGrp = transY.map(trans => ((trans(0), trans(1).substring(0, 7)), trans(2).toDouble)).reduceByKey(_ + _)
+
+    // 2. Parse customers
+    val custs = sc.textFile(inDir + "cust.txt").map(line => line.split(";"))
+
+    // 3. Join aggregated transactions and customers
+    val transCust = transGrp.map(trans => (trans._1._1, trans)).leftOuterJoin(custs.map(cust => (cust(0), cust(1))))
+    val res = transCust.map(txCust => ((txCust._2._1._1._2, txCust._1), Array(txCust._2._1._1._2, txCust._1, txCust._2._2.getOrElse(""), "%.2f".format(txCust._2._1._2)).mkString(";")))
+    res.sortByKey(true, 1).map(keyArr => keyArr._2).saveAsTextFile(outDir)
+
     // clean up
     sc.stop()
   }
