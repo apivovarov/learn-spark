@@ -2,6 +2,6 @@ name := "Learn Spark"
 
 version := "1.0"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.7"
 
-libraryDependencies += "org.apache.spark" %% "spark-core" % "1.3.1"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.0"
