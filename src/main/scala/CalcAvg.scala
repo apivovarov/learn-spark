@@ -7,31 +7,18 @@ import scala.collection.mutable.ListBuffer
 
 object CalcAvg {
 
-  def addSeparator(dir : String) : String = {
-    val sep = System.getProperty("file.separator")
-    var res = dir
-    if (!res.endsWith(sep)) {
-      res += sep
-    }
-    return res
-  }
-
   def main(args: Array[String]) {
 
     if (args.length < 1) {
-      System.err.println("Usage: LearnSpark <in_dir>")
+      System.err.println("Usage: CalcAvg in/numbers.txt")
       System.exit(1)
     }
-
-    // input and output files folder
-    val inDir = addSeparator(args(0))
 
     val conf = new SparkConf().setAppName("CalcAvg")
     val sc = new SparkContext(conf)
 
     // 1. readFile
-    // val inDir = "in/"
-    val nums = sc.textFile(inDir + "numbers.txt").map(line => line.toDouble)
+    val nums = sc.textFile(args(0)).map(line => line.toDouble)
 
     // 2. aggregate
     val agg = nums.aggregate((0.0, 0))(

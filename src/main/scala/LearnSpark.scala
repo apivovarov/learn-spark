@@ -30,7 +30,7 @@ object LearnSpark {
   def main(args: Array[String]) {
 
     if (args.length < 2) {
-      System.err.println("Usage: LearnSpark <in_dir> <out_dir>")
+      System.err.println("Usage: LearnSpark in out")
       System.err.println("<out_dir> should not exist before run")
       System.exit(1)
     }

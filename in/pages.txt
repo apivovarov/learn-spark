@@ -1,0 +1,4 @@
+abc.com|cnn.com,nytimes.com
+cnn.com|nytimes.com,rbc.com
+nytimes.com|fidelity.com,cnn.com
+fidelity.com|abc.com,cnn.com
